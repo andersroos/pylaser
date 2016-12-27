@@ -1,0 +1,8 @@
+# Running
+svgwrite
+dxfwrite
+dxf
+
+# Dev/Test
+nose
+twine
