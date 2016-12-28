@@ -4,8 +4,7 @@
 import os
 
 from pylaser.output import save
-from pylaser.shape import Polyline, Point
-
+from pylaser.shape import Polyline, Point, Arc, Circle
 
 pl = Polyline(
     Point(0, 100),
@@ -13,8 +12,13 @@ pl = Polyline(
     Point(100, 0),
 )
 
-save('/tmp/pylaser.svg', pl)
-save('/tmp/pylaser.dxf', pl)
+ci = Circle(
+    Point(50, 50),
+    25,
+)
+
+save('/tmp/pylaser.svg', pl, ci)
+save('/tmp/pylaser.dxf', pl, ci)
 
 
 os.system('firefox /tmp/pylaser.svg')

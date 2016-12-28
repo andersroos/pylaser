@@ -1,5 +1,8 @@
 import sdxf
 import svgwrite
+from svgwrite.container import Group
+
+from pylaser.shape import box
 
 
 def save(filename, *objs):
@@ -19,9 +22,14 @@ def _to_svg(filename, *objs):
 
     drawing = svgwrite.Drawing(filename)
 
-    for obj in objs:
-        drawing.add(obj.to_svg())
+    b = box(*(o.box() for o in objs))
 
+    g = Group(transform='translate(0, %d) scale(1, -1)' % int(b.max.y - b.min.y))
+
+    for obj in objs:
+        g.add(obj.to_svg())
+
+    drawing.add(g);
     drawing.save()
 
 
