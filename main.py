@@ -3,8 +3,7 @@
 # Nice to have while developing.
 import os
 
-from pylaser.output import save
-from pylaser.shape import Polyline, Point, Arc, Circle
+from pylaser import Group, Polyline, Point, Circle, BoxEdge, write
 
 pl = Polyline(
     Point(0, 100),
@@ -17,8 +16,12 @@ ci = Circle(
     25,
 )
 
-save('/tmp/pylaser.svg', pl, ci)
-save('/tmp/pylaser.dxf', pl, ci)
+be = BoxEdge(Point(100, 100), Point(300, 100), depth=20, length=50, right=False, cut_start=True, cut_end=True)
+
+g = Group(pl, ci, be, rel=Point(100, 100))
+
+write('/tmp/pylaser.svg', g)
+write('/tmp/pylaser.dxf', g)
 
 
 os.system('firefox /tmp/pylaser.svg')
