@@ -108,11 +108,14 @@ class Group(object):
 
     def __init__(self, *objs, rel=Point(0, 0)):
         """ Make a group and all objects within it is relative to point rel. """
-        self.objs = list(objs)
+        self.objs = []
+        for o in objs:
+            self.append(o)
         self.rel = rel
 
     def append(self, obj):
-        self.objs.append(obj)
+        if obj:
+            self.objs.append(obj)
 
     def box(self):
         b = box(*self.objs)
