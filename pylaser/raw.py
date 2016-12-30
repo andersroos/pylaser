@@ -11,6 +11,9 @@ Point = namedtuple('Point', 'x,y')
 Box = namedtuple('Box', 'min,max')
 
 
+STROKE_WIDTH = 1
+
+
 def box(*objs):
     """ Return a box spanning all objs. """
     boxes = [obj.box() for obj in objs]
@@ -35,7 +38,7 @@ class Polyline(object):
         return svgwrite.shapes.Polyline(points=[(p.x, p.y) for p in self.points],
                                         fill='none',
                                         stroke='black',
-                                        stroke_width=2)
+                                        stroke_width=STROKE_WIDTH)
 
     def to_dxf(self, x_off, y_off):
         return sdxf.PolyLine(points=[(p.x + x_off, p.y + y_off, 0) for p in self.points]),
@@ -60,7 +63,7 @@ class Circle(object):
         return svgwrite.shapes.Circle(center=self.center, r=self.radius,
                                       fill='none',
                                       stroke='black',
-                                      stroke_width=2)
+                                      stroke_width=STROKE_WIDTH)
 
 
 class Arc(object):
