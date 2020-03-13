@@ -74,7 +74,7 @@ class BoxEdge(Polyline):
                 y += depth * cut_y * ping
             return x, y
 
-        x, y = start
+        x, y = start.x, start.y
         x, y = add(end_lengths, x, y)
         ping = -ping
         for _ in range(count):

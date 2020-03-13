@@ -7,11 +7,27 @@ import svgwrite
 # Basic shapes and objects, output formats should not be known outside this file.
 
 
-Point = namedtuple('Point', 'x,y')
-Box = namedtuple('Box', 'min,max')
-
-
 STROKE_WIDTH = 1
+
+
+class Point:
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __neg__(self):
+        return Point(-self.x, -self.y)
+
+
+class Box:
+    
+    def __init__(self, min, max):
+        self.min = min
+        self.max = max
 
 
 def box(*objs):
@@ -60,7 +76,7 @@ class Circle(object):
         return sdxf.Circle(center=(self.center.x + x_off, self.center.y + y_off), radius=self.radius),
 
     def to_svg(self):
-        return svgwrite.shapes.Circle(center=self.center, r=self.radius,
+        return svgwrite.shapes.Circle(center=(self.center.x, self.center.y), r=self.radius,
                                       fill='none',
                                       stroke='black',
                                       stroke_width=STROKE_WIDTH)
