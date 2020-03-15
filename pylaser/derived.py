@@ -15,7 +15,7 @@ class BoxEdge(Polyline):
 
         :depth: the depth of the cuts
         :length: the length of the cuts
-        :right: is the cut on the right side (True) or the left side (False)
+        :right: is the cut (outside) on the right side (True) or the left side (False) in the vector direction
         :cut_start: start with a cut
         :cut_end: end with a cut
         :min_length: when calculating the length at start, this is the min, defaults to depth if None
