@@ -51,7 +51,7 @@ class BoxEdge(Polyline):
             # Need odd number of cuts.
             count -= 1 - count % 2
 
-        end_lengths = (distance - length * count) // 2
+        end_lengths = (distance - length * count) / 2
 
         if cut_start:
             start = Point(start.x + cut_x * depth, start.y + cut_y * depth)
