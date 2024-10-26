@@ -1,6 +1,6 @@
 
 from pylaser.raw import Point, Box, Polyline, Circle, Group, Arc, write
-from pylaser.derived import BoxEdge
+from pylaser.derived import BoxEdge, Rect
 
 __doc__ = """
 Positive x is right and positive y is up.
@@ -18,5 +18,6 @@ __all__ = [
     'Group',
     'write',
     'BoxEdge',
+    'Rect',
 ]
 

@@ -6,6 +6,17 @@ from pylaser.raw import Point, Box, Polyline
 # Objects that are combinations of or extensions of basic shapes.
 #
 
+class Rect(Polyline):
+    
+    def __init__(self, start, end):
+        super().__init__(
+            start,
+            Point(start.x, end.y),
+            end,
+            Point(end.x, start.y),
+            start,
+        )
+
 
 class BoxEdge(Polyline):
 
