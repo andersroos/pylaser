@@ -9,7 +9,7 @@ with open(path.join(setup_dir, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pylaser',
-    version='0.0.0.dev0',
+    version='0.2.0.dev0',
     description='Python lib for laser cutting.',
     long_description=long_description,
     url='https://github.com/andersroos/pylaser',

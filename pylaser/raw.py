@@ -85,42 +85,69 @@ class Circle(object):
 class Arc(object):
 
     def __init__(self, center, radius, start_angle=0, end_angle=360):
+        """ An arc, 0 is up. """
+        
         self.center = center
         self.radius = radius
         self.start_angle = start_angle
         self.end_angle = end_angle
 
+    def _start_rad(self):
+        return (self.start_angle - 90) * math.pi / 180
+    
+    def _end_rad(self):
+        return (self.end_angle - 90) * math.pi / 180
+
+    def _start_dy(self):
+        return self.radius * math.sin(self._start_rad())
+    
+    def _start_dx(self):
+        return self.radius * math.cos(self._start_rad())
+
+    def _end_dy(self):
+        return self.radius * math.sin(self._end_rad())
+    
+    def _end_dx(self):
+        return self.radius * math.cos(self._end_rad())
+        
     def box(self):
-        # TODO Fix this when using angles.
-        return Box(
-            Point(self.center.x - self.radius, self.center.y - self.radius),
-            Point(self.center.x + self.radius, self.center.y + self.radius),
-        )
+        x_min = min(self.center.x, self.center.x + self._start_dx(), self.center.x + self._end_dx())
+        x_max = max(self.center.x, self.center.x + self._start_dx(), self.center.x + self._end_dx())
+        y_min = min(self.center.y, self.center.y + self._start_dy(), self.center.y + self._end_dy())
+        y_max = max(self.center.y, self.center.y + self._start_dy(), self.center.y + self._end_dy())
+        return Box(Point(x_min, x_max), Point(y_min, y_max))
 
-    def to_dxf(self):
-        return sdxf.Arc(center=(self.center.x,self.center.y),
-                        radius=self.radius,
-                        startAngle=self.start_angle,
-                        endAngle=self.end_angle)
+    def to_dxf(self, x_off, y_off):
+        return sdxf.Arc(
+            center=(self.center.x + x_off, self.center.y + y_off),
+            radius=self.radius,
+            startAngle=90 - self.end_angle,
+            endAngle=90 - self.start_angle,
+        ),
 
-    def to_svg(self, x_off, y_off):
-        # TODO Fix me, dooes not work
-        # TODO Use x_off and y off.
-        return svgwrite.path.Path(d=[
+    def to_svg(self,):
+        # svg is flipped in the end so we need to ch
+        
+        large_arc_flag = 0 if self.end_angle - self.start_angle <= 180 else 1
+
+        d = [
             'M',
-            (self.center.x + self.radius * math.cos(self.start_angle * 2 * math.pi / 360),
-             self.center.y + self.radius * math.sin(self.start_angle * 2 * math.pi / 360)),
+            (self.center.x + self._start_dx(), self.center.y - self._start_dy()),
             'A',
-            (self.center.x, self.center.y),
-            0,
+            self.radius,
+            self.radius,
             0,  # small/large
-            0,  # clockwise/anti
-            (self.center.x + self.radius * math.cos(self.end_angle * 2 * math.pi / 360),
-             self.center.y + self.radius * math.sin(self.end_angle * 2 * math.pi / 360)),
-        ],
+            large_arc_flag,  # clockwise/anti
+            0,
+            (self.center.x + self._end_dx(), self.center.y - self._end_dy()),
+        ]
+        
+        return svgwrite.path.Path(
+            d=d,
             fill='none',
             stroke='black',
-            stroke_width=2),
+            stroke_width=1,
+        )
 
 
 class Group(object):
